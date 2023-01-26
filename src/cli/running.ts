@@ -9,15 +9,15 @@ const { paths } = require('../constants');
 
 const cwd = paths.baseDir;
 
-function getRunningPid(callback) {
+function getRunningPid(callback: (err?: Error, pid?: number) => void) {
     fs.readFile(paths.pidfile, {
         encoding: 'utf-8',
-    }, (err, pid) => {
+    }, (err: Error, data: string) => {
         if (err) {
             return callback(err);
         }
 
-        pid = parseInt(pid, 10);
+        const pid = parseInt(data, 10);
 
         try {
             process.kill(pid, 0);
