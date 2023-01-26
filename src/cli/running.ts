@@ -1,8 +1,8 @@
 import { OptionValues } from '@commander-js/extra-typings';
 
-import fs from 'fs';
-import childProcess from 'child_process';
-import chalk from 'chalk';
+import * as fs from 'fs';
+import * as childProcess from 'child_process';
+import * as chalk from 'chalk';
 
 import fork from '../meta/debugFork';
 import { paths } from '../constants';
