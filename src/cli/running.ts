@@ -1,4 +1,5 @@
 'use strict';
+import { OptionValues } from '@commander-js/extra-typings';
 
 const fs = require('fs');
 const childProcess = require('child_process');
@@ -28,7 +29,7 @@ function getRunningPid(callback: (err?: Error, pid?: number) => void) {
     });
 }
 
-function start(options) {
+function start(options : OptionValues) {
     if (options.dev) {
         process.env.NODE_ENV = 'development';
         fork(paths.loader, ['--no-daemon', '--no-silent'], {
@@ -80,7 +81,7 @@ function stop() {
     });
 }
 
-function restart(options) {
+function restart(options: OptionValues) {
     getRunningPid((err, pid) => {
         if (!err) {
             console.log(chalk.bold('\nRestarting NodeBB'));
