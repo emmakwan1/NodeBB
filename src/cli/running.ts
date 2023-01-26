@@ -1,12 +1,11 @@
-'use strict';
 import { OptionValues } from '@commander-js/extra-typings';
 
-const fs = require('fs');
-const childProcess = require('child_process');
-const chalk = require('chalk');
+import fs from 'fs';
+import childProcess from 'child_process';
+import chalk from 'chalk';
 
-const fork = require('../meta/debugFork');
-const { paths } = require('../constants');
+import fork from '../meta/debugFork';
+import { paths } from '../constants';
 
 const cwd = paths.baseDir;
 
@@ -24,12 +23,12 @@ function getRunningPid(callback: (err?: Error, pid?: number) => void) {
             process.kill(pid, 0);
             callback(null, pid);
         } catch (e) {
-            callback(e);
+            callback(e instanceof Error ? e : undefined);
         }
     });
 }
 
-function start(options : OptionValues) {
+export function start(options : OptionValues) {
     if (options.dev) {
         process.env.NODE_ENV = 'development';
         fork(paths.loader, ['--no-daemon', '--no-silent'], {
@@ -70,7 +69,7 @@ function start(options : OptionValues) {
     return child;
 }
 
-function stop() {
+export function stop() {
     getRunningPid((err, pid) => {
         if (!err) {
             process.kill(pid, 'SIGTERM');
@@ -81,7 +80,7 @@ function stop() {
     });
 }
 
-function restart(options: OptionValues) {
+export function restart(options: OptionValues) {
     getRunningPid((err, pid) => {
         if (!err) {
             console.log(chalk.bold('\nRestarting NodeBB'));
@@ -95,7 +94,7 @@ function restart(options: OptionValues) {
     });
 }
 
-function status() {
+export function status() {
     getRunningPid((err, pid) => {
         if (!err) {
             console.log(`\n${[
@@ -111,16 +110,10 @@ function status() {
     });
 }
 
-function log() {
+export function log() {
     console.log(`${chalk.red('\nHit ') + chalk.bold('Ctrl-C ') + chalk.red('to exit\n')}\n`);
     childProcess.spawn('tail', ['-F', './logs/output.log'], {
         stdio: 'inherit',
         cwd,
     });
 }
-
-exports.start = start;
-exports.stop = stop;
-exports.restart = restart;
-exports.status = status;
-exports.log = log;
