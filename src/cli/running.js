@@ -29,7 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.log = exports.status = exports.restart = exports.stop = exports.start = void 0;
 const fs = __importStar(require("fs"));
 const childProcess = __importStar(require("child_process"));
-const chalk = __importStar(require("chalk"));
+const chalk_1 = __importDefault(require("chalk"));
 const debugFork_1 = __importDefault(require("../meta/debugFork"));
 const constants_1 = require("../constants");
 const cwd = constants_1.paths.baseDir;
@@ -62,18 +62,18 @@ function start(options) {
     }
     if (options.log) {
         console.log(`\n${[
-            chalk.bold('Starting NodeBB with logging output'),
-            chalk.red('Hit ') + chalk.bold('Ctrl-C ') + chalk.red('to exit'),
+            chalk_1.default.bold('Starting NodeBB with logging output'),
+            chalk_1.default.red('Hit ') + chalk_1.default.bold('Ctrl-C ') + chalk_1.default.red('to exit'),
             'The NodeBB process will continue to run in the background',
-            `Use "${chalk.yellow('./nodebb stop')}" to stop the NodeBB server`,
+            `Use "${chalk_1.default.yellow('./nodebb stop')}" to stop the NodeBB server`,
         ].join('\n')}`);
     }
     else if (!options.silent) {
         console.log(`\n${[
-            chalk.bold('Starting NodeBB'),
-            `  "${chalk.yellow('./nodebb stop')}" to stop the NodeBB server`,
-            `  "${chalk.yellow('./nodebb log')}" to view server output`,
-            `  "${chalk.yellow('./nodebb help')}" for more commands\n`,
+            chalk_1.default.bold('Starting NodeBB'),
+            `  "${chalk_1.default.yellow('./nodebb stop')}" to stop the NodeBB server`,
+            `  "${chalk_1.default.yellow('./nodebb log')}" to view server output`,
+            `  "${chalk_1.default.yellow('./nodebb help')}" for more commands\n`,
         ].join('\n')}`);
     }
     // Spawn a new NodeBB process
@@ -105,7 +105,7 @@ exports.stop = stop;
 function restart(options) {
     getRunningPid((err, pid) => {
         if (!err) {
-            console.log(chalk.bold('\nRestarting NodeBB'));
+            console.log(chalk_1.default.bold('\nRestarting NodeBB'));
             process.kill(pid, 'SIGTERM');
             options.silent = true;
             start(options);
@@ -120,21 +120,21 @@ function status() {
     getRunningPid((err, pid) => {
         if (!err) {
             console.log(`\n${[
-                chalk.bold('NodeBB Running ') + chalk.cyan(`(pid ${pid.toString()})`),
-                `\t"${chalk.yellow('./nodebb stop')}" to stop the NodeBB server`,
-                `\t"${chalk.yellow('./nodebb log')}" to view server output`,
-                `\t"${chalk.yellow('./nodebb restart')}" to restart NodeBB\n`,
+                chalk_1.default.bold('NodeBB Running ') + chalk_1.default.cyan(`(pid ${pid.toString()})`),
+                `\t"${chalk_1.default.yellow('./nodebb stop')}" to stop the NodeBB server`,
+                `\t"${chalk_1.default.yellow('./nodebb log')}" to view server output`,
+                `\t"${chalk_1.default.yellow('./nodebb restart')}" to restart NodeBB\n`,
             ].join('\n')}`);
         }
         else {
-            console.log(chalk.bold('\nNodeBB is not running'));
-            console.log(`\t"${chalk.yellow('./nodebb start')}" to launch the NodeBB server\n`);
+            console.log(chalk_1.default.bold('\nNodeBB is not running'));
+            console.log(`\t"${chalk_1.default.yellow('./nodebb start')}" to launch the NodeBB server\n`);
         }
     });
 }
 exports.status = status;
 function log() {
-    console.log(`${chalk.red('\nHit ') + chalk.bold('Ctrl-C ') + chalk.red('to exit\n')}\n`);
+    console.log(`${chalk_1.default.red('\nHit ') + chalk_1.default.bold('Ctrl-C ') + chalk_1.default.red('to exit\n')}\n`);
     childProcess.spawn('tail', ['-F', './logs/output.log'], {
         stdio: 'inherit',
         cwd,
